@@ -14,14 +14,17 @@ public class Product {
         this.price = price;
         this.department = department;
     }
+
     public String toString() {
-        return "Products{" +
+        return productName + ", $" + price + ", " + department + ", " + sku;
+    }
+        /* return "Products{" +
                 "sku='" + sku + '\'' +
                 ", name='" + productName + '\'' +
                 ", price=" + price +
                 ", department='" + department + '\'' +
                 '}';
-    }
+         */
 
     public String getSku() {
         return sku;

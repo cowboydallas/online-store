@@ -17,26 +17,25 @@ public class OnlineStore {
 
     // return home method, Display home screen to user
     public static void returnHome() {
+        int choice;
         System.out.println("Welcome to Binary Buds Online Store! What would you like to do?");
         System.out.println("1: Display all products");
         System.out.println("2: Display Cart");
         System.out.println("3: Exit");
-        int choice = input.nextInt();
-        while (choice != 3) {
-            switch (choice) {
-                case 1:
-                    displayProducts();
-                    break;
-                case 2:
-                    displayCart();
-                    break;
-                case 3:
-                    exitApplication();
-                    break;
-            }
-            System.out.println();
-
+        choice = input.nextInt();
+        switch (choice) {
+            case 1:
+                displayProducts();
+                break;
+            case 2:
+                displayCart();
+                break;
+            case 3:
+                exitApplication();
+                break;
         }
+        System.out.println();
+        while (choice !=3);
 
     }
 
@@ -96,80 +95,98 @@ public class OnlineStore {
         System.out.println("enter 2 for Computers");
         System.out.println("enter 3 for Games");
         System.out.println("enter 4 for Electronics");
+        boolean itemFound = false;
         int userchoice = input.nextInt();
+        input.nextLine();
+
         for (Product product : products) {
-            if (userchoice == 1 && product.getDepartment().equalsIgnoreCase("audio video")) {
+            if (userchoice == 1 && product.getDepartment().equalsIgnoreCase("Audio Video"))
                 System.out.println(product);
-            }
-            if (userchoice == 2 && product.getDepartment().equalsIgnoreCase("Computers")) {
+            itemFound = true;
+            if (userchoice == 2 && product.getDepartment().equalsIgnoreCase("Computers"))
                 System.out.println(product);
-            }
-            if (userchoice == 3 && product.getDepartment().equalsIgnoreCase("Games")) {
+            itemFound = true;
+            if (userchoice == 3 && product.getDepartment().equalsIgnoreCase("Games"))
                 System.out.println(product);
-            }
-            if (userchoice == 4 && product.getDepartment().equalsIgnoreCase("electronics")) {
+            itemFound = true;
+            if (userchoice == 4 && product.getDepartment().equalsIgnoreCase("Electronics")) {
                 System.out.println(product);
+                itemFound = true;
             }
+        }
+        if (itemFound == false) {
+            System.out.println("There are no items in this category");
+        }
             else {
-                System.out.println("This is not a correct input");
+                System.out.println("This is not a correct input\n");
+
+            returnHome();
+        }
+        }
+
+    private static void filterByPrice () {
+        System.out.println("what is the minimum price you are willing to purchase a product");
+        Double min = input.nextDouble();
+        System.out.println("what is the maximum price you will purchase a product for ");
+        Double max = input.nextDouble();
+        for (Product product : products) {
+            if (product.getPrice() >= min && product.getPrice() <= max) {
+                System.out.println(product);
+                break;
             }
+
         }
     }
 
-        private static void filterByPrice () {
-            System.out.println("what is the minimum price you are willing to purchase a product");
-            Double min = input.nextDouble();
-            System.out.println("what is the maximum price you will purchase a product for ");
-            Double max = input.nextDouble();
-            for (Product product : products) {
-                if (product.getPrice() >= min && product.getPrice() <= max) {
-                    System.out.println(product);
-                    break;
-                }
 
+    private static void addProductToCart () {
+        System.out.println("Please enter the name would you like to add to your cart?");
+        String userChoice = input.nextLine();
+
+        boolean found = false;
+        for (Product product : products) {
+            if (product.getProductName().equalsIgnoreCase(userChoice)) {
+                userCart.add(product);
+                found = true;
+                break;
             }
         }
 
-
-        private static void addProductToCart () {
-            System.out.println("Please enter the name would you like to add to your cart?");
-            String userChoice = input.nextLine();
-            for (Product product : products) {
-                if (product.getProductName().equalsIgnoreCase(userChoice)) {
-                    userCart.add(product);
-                    break;
-                } else {
-                    System.out.println("That product does not exist in our store!");
-                }
-            }
-            System.out.println(userCart);
-            returnHome();
+        if (!found) {
+            System.out.println("That item is not in our inventory!");
         }
+        System.out.println(userCart);
+        returnHome();
+    }
 
-        public static ArrayList<Product> getInventoryOfProducts() {
-            ArrayList<Product> inventory = new ArrayList<Product>();
-            try {
-                FileReader fileReader = new FileReader("products.csv");
-                BufferedReader buff = new BufferedReader(fileReader);
-                buff.readLine();
-                String line;
-                while ((line = buff.readLine()) != null) {
-                    String[] data = line.split("\\|");
-                    Product product = new Product(data[0], data[1], Double.parseDouble(data[2]), data[3]);
-                    inventory.add(product);
-                }
-            } catch (IOException e) {
-                System.out.println("There was an error");
+    public static ArrayList<Product> getInventoryOfProducts() {
+        ArrayList<Product> inventory = new ArrayList<Product>();
+        try {
+            FileReader fileReader = new FileReader("products.csv");
+            BufferedReader buff = new BufferedReader(fileReader);
+            buff.readLine();
+            String line;
+            while ((line = buff.readLine()) != null) {
+                String[] data = line.split("\\|");
+                Product product = new Product(data[0], data[1], Double.parseDouble(data[2]), data[3]);
+                inventory.add(product);
             }
-            return inventory;
+        } catch (IOException e) {
+            System.out.println("There was an error");
         }
+        return inventory;
+    }
 
-        public static void displayCart() {
-                System.out.println("Your Cart is Empty");
+    public static void displayCart() {
         if (userCart.isEmpty()){
-            } else {
-                System.out.println( "\n Your Cart:");
+            System.out.println("Your Cart is Empty");
+        } else {
+            System.out.println( "Your Cart:");
+            for (Product product : userCart) {
+                System.out.println(product);
+            }
         }
+        returnHome();
            /* try {
                 FileReader fileReader = new FileReader("products.csv");
                 BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -179,20 +196,16 @@ public class OnlineStore {
                 throw new RuntimeException(e);
 
             }*/
-            // public void addProductToCart()
-            // ArrayList<String>
-            for (Product product: userCart){
-                System.out.println(product);
+        // public void addProductToCart()
+        // ArrayList<String>
 
-            }
-        }
-
-        public static void removeProduct() {
+    }
+    public static void removeProduct() {
         System.out.println("Which item are you removing?");
         String userChoice = input.nextLine();
 
         for (Product product: userCart) {
-             if (product.getProductName().equalsIgnoreCase(userChoice)) {
+            if (product.getProductName().equalsIgnoreCase(userChoice)) {
                 System.out.println(product);
                 userCart.remove(product);
                 break;
@@ -200,9 +213,5 @@ public class OnlineStore {
                 System.out.println("That product does not exist in your cart!");
             }
         }
-        }
     }
-
-
-
-
+}
