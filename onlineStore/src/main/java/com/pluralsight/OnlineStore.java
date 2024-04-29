@@ -40,13 +40,13 @@ public class OnlineStore {
     }
 
     // exit application method, prompts end of application
-    private static void exitApplication() {
+    public static void exitApplication() {
         System.out.println("Thank you for shopping with us!");
         System.exit(0);
     }
 
     // method displays the products and prompts the user to select choices to filter, add a product or return to homescreen
-    private static void displayProducts() {
+    public static void displayProducts() {
         for (Product product : products) {
             System.out.println(product);
         }
@@ -70,7 +70,7 @@ public class OnlineStore {
         }
     }
 
-    private static void filterByCatagory() {
+    public static void filterByCatagory() {
         System.out.println("which category would you like to filter by?");
         System.out.println("Enter 1 to filter by price  ");
         System.out.println("Enter 2 to filter by department.");
@@ -89,7 +89,7 @@ public class OnlineStore {
         }
     }
 
-    private static void filterByDepartment() {
+    public static void filterByDepartment() {
         System.out.println(" What department of objects do you want to display.");
         System.out.println("enter 1 for Audio Video");
         System.out.println("enter 2 for Computers");
@@ -112,19 +112,17 @@ public class OnlineStore {
             if (userchoice == 4 && product.getDepartment().equalsIgnoreCase("Electronics")) {
                 System.out.println(product);
                 itemFound = true;
-            }
-        }
-        if (itemFound == false) {
-            System.out.println("There are no items in this category");
-        }
-            else {
-                System.out.println("This is not a correct input\n");
 
+
+            } else {
+                System.out.println("The input entered is incorrect!");
+            }
+            System.out.println("\n");
             returnHome();
         }
-        }
+    }
 
-    private static void filterByPrice () {
+    public static void filterByPrice () {
         System.out.println("what is the minimum price you are willing to purchase a product");
         Double min = input.nextDouble();
         System.out.println("what is the maximum price you will purchase a product for ");
@@ -136,10 +134,12 @@ public class OnlineStore {
             }
 
         }
+        System.out.println("\n");
+        returnHome();
     }
 
 
-    private static void addProductToCart () {
+    public static void addProductToCart () {
         System.out.println("Please enter the name would you like to add to your cart?");
         String userChoice = input.nextLine();
 
