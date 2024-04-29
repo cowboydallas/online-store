@@ -21,7 +21,8 @@ public class OnlineStore {
         System.out.println("Welcome to Binary Buds Online Store! What would you like to do?");
         System.out.println("1: Display all products");
         System.out.println("2: Display Cart");
-        System.out.println("3: Exit");
+        System.out.println("3: Remove product from cart");
+        System.out.println("4: Exit");
         choice = input.nextInt();
         switch (choice) {
             case 1:
@@ -31,12 +32,34 @@ public class OnlineStore {
                 displayCart();
                 break;
             case 3:
+                removeProduct();
+                break;
+            case 4:
                 exitApplication();
                 break;
         }
         System.out.println();
-        while (choice !=3);
+        while (choice != 4) ;
 
+    }
+
+    private static void removeProduct() {
+        if (userCart.size() == 0) {
+            System.out.println("Your cart is empty!");
+            returnHome();
+        }
+        System.out.println("Your cart:");
+        for (int i = 0; i < userCart.size(); i++) {
+            System.out.println((i + 1) + ":" + userCart.get(i));
+        }
+        System.out.println("Enter the product you would like to remove");
+        int userChoice = input.nextInt();
+        input.nextLine();
+
+        Product productremoved = userCart.remove(userChoice - 1);
+        System.out.println("You have removed " + productremoved + " from your cart");
+
+        returnHome();
     }
 
     // exit application method, prompts end of application
@@ -64,8 +87,6 @@ public class OnlineStore {
                 addProductToCart();
                 break;
             case 3:
-                removeProduct();
-            case 4:
                 return;
         }
     }
@@ -122,7 +143,7 @@ public class OnlineStore {
         }
     }
 
-    public static void filterByPrice () {
+    public static void filterByPrice() {
         System.out.println("what is the minimum price you are willing to purchase a product");
         Double min = input.nextDouble();
         System.out.println("what is the maximum price you will purchase a product for ");
@@ -139,7 +160,7 @@ public class OnlineStore {
     }
 
 
-    public static void addProductToCart () {
+    public static void addProductToCart() {
         System.out.println("Please enter the name would you like to add to your cart?");
         String userChoice = input.nextLine();
 
@@ -178,10 +199,10 @@ public class OnlineStore {
     }
 
     public static void displayCart() {
-        if (userCart.isEmpty()){
+        if (userCart.isEmpty()) {
             System.out.println("Your Cart is Empty");
         } else {
-            System.out.println( "Your Cart:");
+            System.out.println("Your Cart:");
             for (Product product : userCart) {
                 System.out.println(product);
             }
@@ -199,19 +220,5 @@ public class OnlineStore {
         // public void addProductToCart()
         // ArrayList<String>
 
-    }
-    public static void removeProduct() {
-        System.out.println("Which item are you removing?");
-        String userChoice = input.nextLine();
-
-        for (Product product: userCart) {
-            if (product.getProductName().equalsIgnoreCase(userChoice)) {
-                System.out.println(product);
-                userCart.remove(product);
-                break;
-            } else {
-                System.out.println("That product does not exist in your cart!");
-            }
-        }
     }
 }
